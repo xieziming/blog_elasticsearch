@@ -10,7 +10,7 @@ spring:
     password: xieziming
     type: org.apache.tomcat.jdbc.pool.DataSource
     tomcat:
-      max-active: 2
+      max-active: 4
       test-on-borrow: true
-      initial-size: 1
+      initial-size: 2
       test-while-idle: true

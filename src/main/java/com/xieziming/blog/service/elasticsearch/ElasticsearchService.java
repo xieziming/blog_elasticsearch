@@ -4,7 +4,7 @@
  * Copyright (c) 2017 xieziming.com All rights reserved.
  */
 
-package com.xieziming.blog.service;
+package com.xieziming.blog.service.elasticsearch;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse;
@@ -17,6 +17,6 @@ import java.io.IOException;
  */
 public interface ElasticsearchService<T> {
     CreateIndexResponse createIndex() throws IOException;
-    IndexResponse save(T t) throws IOException;
-    DeleteIndexResponse deleteIndex() throws IOException;
+    DeleteIndexResponse deleteIndex();
+    IndexResponse save(T t) throws Exception;
 }

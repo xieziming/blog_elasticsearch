@@ -4,9 +4,9 @@
  * Copyright (c) 2017 xieziming.com All rights reserved.
  */
 
-package com.xieziming.blog.service;
+package com.xieziming.blog.service.elasticsearch;
 
-import com.xieziming.blog.model.LiveCalendar;
+import com.xieziming.blog.model.wordpress.WordpressCalendar;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -26,8 +26,8 @@ import java.io.IOException;
  * Created by Suny on 7/8/17.
  */
 @Service
-public class CalendarElasticsearchServiceImpl implements ElasticsearchService<LiveCalendar> {
-    private static final String INDEX_NAME = "xieziming.blog.calendar";
+public class WordpressCalendarElasticsearchServiceImpl implements ElasticsearchService<WordpressCalendar> {
+    private static final String INDEX_NAME = "com.xieziming.blog.calendar";
     private static final String TYPE = "event";
     @Autowired
     private Client elasticSearchClient;
@@ -52,8 +52,8 @@ public class CalendarElasticsearchServiceImpl implements ElasticsearchService<Li
 
 
     @Override
-    public IndexResponse save(LiveCalendar liveCalendar) throws IOException {
-        IndexResponse response = elasticSearchClient.prepareIndex(INDEX_NAME, TYPE, String.valueOf(liveCalendar.getId())).setSource(buildJson(liveCalendar)).get();
+    public IndexResponse save(WordpressCalendar wordpressCalendar) throws IOException {
+        IndexResponse response = elasticSearchClient.prepareIndex(INDEX_NAME, TYPE, String.valueOf(wordpressCalendar.getId())).setSource(buildJson(wordpressCalendar)).get();
         return response;
     }
 
@@ -63,25 +63,26 @@ public class CalendarElasticsearchServiceImpl implements ElasticsearchService<Li
         return jsonBuilder.startObject()
                             .startObject(TYPE)
                                 .startObject("properties")
-                                    .startObject("coordinate").field("type", "geo_point")
-                                    .endObject()
+                                    .startObject("coordinate").field("type", "geo_point").endObject()
+                                    .startObject("startTime").field("type", "date").endObject()
+                                    .startObject("endTime").field("type", "date").endObject()
                                 .endObject()
                             .endObject()
                 .endObject();
     }
 
-    XContentBuilder buildJson(LiveCalendar liveCalendar) throws IOException {
-        if(liveCalendar.getLocationLatitude().isEmpty() || liveCalendar.getLocationLongitude().isEmpty()){
-            System.out.println(liveCalendar.getId());
+    XContentBuilder buildJson(WordpressCalendar wordpressCalendar) throws IOException {
+        if(wordpressCalendar.getLocationLatitude().isEmpty() || wordpressCalendar.getLocationLongitude().isEmpty()){
+            System.out.println(wordpressCalendar.getId());
         }
         XContentBuilder jsonBuilder = XContentFactory.jsonBuilder();
-        jsonBuilder.startObject().field("title", liveCalendar.getTitle())
-                .field("description", liveCalendar.getDescription())
-                .field("category", liveCalendar.getCategory())
-                .field("startTime", liveCalendar.getBeginTime())
-                .field("endTime", liveCalendar.getEndTime())
-                .field("location", liveCalendar.getLocationName())
-                .field("coordinate", liveCalendar.getLocationLatitude() + ", " +liveCalendar.getLocationLongitude())
+        jsonBuilder.startObject().field("title", wordpressCalendar.getTitle())
+                .field("description", wordpressCalendar.getDescription())
+                .field("category", wordpressCalendar.getCategory())
+                .field("startTime", wordpressCalendar.getBeginTime())
+                .field("endTime", wordpressCalendar.getEndTime())
+                .field("location", wordpressCalendar.getLocationName())
+                .field("coordinate", wordpressCalendar.getLocationLatitude() + ", " + wordpressCalendar.getLocationLongitude())
                 .endObject();
         return jsonBuilder;
 

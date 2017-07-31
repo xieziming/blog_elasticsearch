@@ -6,8 +6,8 @@
 
 package com.xieziming.blog.repository;
 
-import com.xieziming.blog.mapper.PostCommentRowMapper;
-import com.xieziming.blog.model.PostComment;
+import com.xieziming.blog.mapper.WordpressCalendarRowMapper;
+import com.xieziming.blog.model.wordpress.WordpressCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PostCommentRepository {
+public class WordpressCalendarRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<PostComment> findAll(Integer postId){
-        return jdbcTemplate.query("SELECT * FROM wp_comments WHERE comment_post_ID = ? AND comment_approved=1 ", new Object[]{postId}, new PostCommentRowMapper());
+    public List<WordpressCalendar> findAll(){
+        return jdbcTemplate.query("SELECT c.*, g.category_name FROM wp_live_calendar c LEFT JOIN wp_live_calendar_categories g ON c.event_category = g.category_id", new WordpressCalendarRowMapper());
     }
 }

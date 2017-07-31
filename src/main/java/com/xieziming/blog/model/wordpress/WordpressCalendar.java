@@ -4,7 +4,7 @@
  * Copyright (c) 2017 xieziming.com All rights reserved.
  */
 
-package com.xieziming.blog.model;
+package com.xieziming.blog.model.wordpress;
 
 import lombok.Data;
 
@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by Suny on 5/22/17.
  */
 @Data
-public class LiveCalendar {
+public class WordpressCalendar {
     private Integer id;
     private String title;
     private Date beginTime;
@@ -24,4 +24,5 @@ public class LiveCalendar {
     private String locationLatitude;
     private String description;
     private String category;
+    private String status;
 }

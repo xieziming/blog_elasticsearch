@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PostPreviewRepository {
+public class WordpressPostPreviewRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

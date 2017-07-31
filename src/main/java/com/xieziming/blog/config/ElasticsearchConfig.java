@@ -9,7 +9,7 @@ package com.xieziming.blog.config;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +23,10 @@ import java.net.UnknownHostException;
 public class ElasticsearchConfig {
     @Bean
     Client elasticSearchClient() throws UnknownHostException {
-        return new PreBuiltTransportClient(Settings.EMPTY).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("tools.xieziming"), 9300));
+        Settings settings = Settings.builder()
+                .put("cluster.name", "com.xieziming.cluster")
+                .put("xpack.security.user", "elastic:changeme")
+                .build();
+        return new PreBuiltXPackTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("tools.xieziming"), 9300));
     }
 }
